@@ -30,7 +30,7 @@ void generateBuffers(uint32_t *ir_buffer, uint32_t *red_buffer)
     for (int i = 0; i < BUFFER_LENGTH; ++i)
     {
         // Calculate the range for fluctuation around the previous value
-        int ir_fluctuation = rand() % 1001 - 500;  // Random value between -500 and 500
+        int ir_fluctuation = rand() % 1001 - 500; // Random value between -500 and 500
         int red_fluctuation = rand() % 201 - 100; // Random value between -100 and 100
 
         // Update the next value based on the previous value and fluctuation
