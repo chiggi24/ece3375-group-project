@@ -23,8 +23,10 @@
  * int32_t *         pn_pmod_value
  *
  * ------------------------------------------------------------------------- */
-#include "algorithm.h"
 #include <stdint.h>
+#include <stdio.h>
+
+#include "algorithm.h"
 
 const uint16_t auw_hamm[31] = {41, 276, 512, 276, 41};
 const uint8_t uch_spo2_table[184] = {95, 95, 95, 96, 96, 96, 97, 97, 97, 97, 97, 98, 98, 98, 98, 98, 99, 99, 99, 99,
