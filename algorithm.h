@@ -1,3 +1,6 @@
+// Header file for MAXREFDES117 algorithms
+// Retrieved from https://www.analog.com/en/resources/reference-designs/maxrefdes117.html#rd-overview
+
 #ifndef ALGORITHM_H_
 #define ALGORITHM_H_
 

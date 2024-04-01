@@ -1,3 +1,6 @@
+// Source file for MAXREFDES117 algorithms
+// Retrieved from https://www.analog.com/en/resources/reference-designs/maxrefdes117.html#rd-overview
+
 /** \file algorithm.c ******************************************************
  *
  * Project: MAXREFDES117#
@@ -104,7 +107,7 @@ void maxim_heart_rate_and_oxygen_saturation(uint32_t *pun_ir_buffer, int32_t n_i
     {
         n_th1 += ((an_dx[k] > 0) ? an_dx[k] : ((int32_t)0 - an_dx[k]));
     }
-    n_th1 = n_th1 / (BUFFER_SIZE - HAMMING_SIZE);
+    n_th1 = n_th1 * 8 / (BUFFER_SIZE - HAMMING_SIZE);
 
     // Peak location is actually index for sharpest location of raw signal since we flipped the signal
     maxim_find_peaks(an_dx_peak_locs, &n_npks, an_dx, BUFFER_SIZE - HAMMING_SIZE, n_th1, 8, 5); // Peak_height, peak_distance, max_num_peaks

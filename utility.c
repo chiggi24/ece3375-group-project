@@ -3,19 +3,20 @@
 #include <time.h>
 #include <stdlib.h>
 
-#include "algorithm.h"
-#include "address_map_arm.h"
+#include "algorithm.h"       // Include header file for algorithms
+#include "address_map_arm.h" // Include header file for address map for ARM
 
-volatile int *hex_ptr = (int *)HEX3_HEX0_BASE;
-volatile int *hex_ptr2 = (int *)HEX5_HEX4_BASE;
-#define SEG_DASH (1 << 6)
+#define SEG_DASH (1 << 6) // Define dash segment
+
+volatile int *hex_ptr = (int *)HEX3_HEX0_BASE;  // Pointer to HEX3_HEX0_BASE address
+volatile int *hex_ptr2 = (int *)HEX5_HEX4_BASE; // Pointer to HEX5_HEX4_BASE address
 
 // Function to initialize buffers with initial data
 void generateInitialBuffers(uint32_t *ir_buffer, uint32_t *red_buffer)
 {
-    // Define initial values
-    uint32_t ir_initial = 9000;   // Initial value for IR buffer
-    uint32_t red_initial = 54000; // Initial value for red buffer
+    // Define initial values for IR and red buffer
+    uint32_t ir_initial = 9000;
+    uint32_t red_initial = 54000;
 
     // Set initial values for the first element of the buffers
     ir_buffer[0] = ir_initial;
@@ -24,7 +25,10 @@ void generateInitialBuffers(uint32_t *ir_buffer, uint32_t *red_buffer)
     // Generate subsequent values based on previous values
     for (int i = 1; i < BUFFER_LENGTH; i++)
     {
+        // Generate random value for IR buffer
         ir_buffer[i] = ir_buffer[i - 1] + (rand() % 600) - 300;
+
+        // Generate random value for red buffer
         red_buffer[i] = red_buffer[i - 1] + (rand() % 400) - 200;
     }
 }
@@ -35,42 +39,30 @@ void replaceOldestEntries(uint32_t *ir_buffer, uint32_t *red_buffer, int replace
     // Shift the existing data to make room for new data for IR buffer
     for (int i = 0; i < BUFFER_LENGTH - replacement_size; i++)
     {
+        // Shift data
         ir_buffer[i] = ir_buffer[i + replacement_size];
     }
+
     // Generate and add new data to the end of the IR buffer
     for (int i = BUFFER_LENGTH - replacement_size; i < BUFFER_LENGTH; i++)
     {
+        // Generate random value
         ir_buffer[i] = ir_buffer[i - 1] + rand() % 600 - 300;
     }
 
     // Shift the existing data to make room for new data for Red buffer
     for (int i = 0; i < BUFFER_LENGTH - replacement_size; i++)
     {
+        // Shift data
         red_buffer[i] = red_buffer[i + replacement_size];
     }
+
     // Generate and add new data to the end of the Red buffer
     for (int i = BUFFER_LENGTH - replacement_size; i < BUFFER_LENGTH; i++)
     {
+        // Generate random value
         red_buffer[i] = red_buffer[i - 1] + (rand() % 400) - 200;
     }
-}
-
-// Function to print buffers
-void printBuffers(uint32_t *ir_buffer, uint32_t *red_buffer)
-{
-    printf("IR Buffer: [");
-    for (int i = 0; i < BUFFER_LENGTH; i++)
-    {
-        printf("%d, ", ir_buffer[i]);
-    }
-    printf("]\n");
-
-    printf("Red Buffer: [");
-    for (int i = 0; i < BUFFER_LENGTH; i++)
-    {
-        printf("%d, ", red_buffer[i]);
-    }
-    printf("]\n");
 }
 
 // Function to calculate cardiovascular zone based on max heart rate
@@ -85,26 +77,32 @@ int calculateCardiovascularZone(int age, int heartRate)
     // Determine cardiovascular zone
     if (percentage >= 50 && percentage < 60)
     {
+        // Zone 1
         return 1;
     }
     else if (percentage >= 60 && percentage < 70)
     {
+        // Zone 2
         return 2;
     }
     else if (percentage >= 70 && percentage < 80)
     {
+        // Zone 3
         return 3;
     }
     else if (percentage >= 80 && percentage < 90)
     {
+        // Zone 4
         return 4;
     }
     else if (percentage >= 90 && percentage <= 100)
     {
+        // Zone 5
         return 5;
     }
     else
     {
+        // Invalid zone
         return 0;
     }
 }
@@ -125,12 +123,15 @@ int getDisplayValue(int digit)
         0x7F, // 8
         0x67  // 9
     };
+
+    // Return segment pattern for given digit
     return segments[digit];
 }
 
+// Function to display heart rate and state on HEX displays
 void displayOnHex(int heartRate, int state)
 {
-    if (state == 0)
+    if (heartRate == -999)
     {
         // Construct the value to display "Error" on HEX5 to HEX2
         int hex3_hex0_value = 0x0 |          // HEX0: Blank
